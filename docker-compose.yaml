@@ -1,0 +1,24 @@
+version: '3'
+
+services:
+  app:
+    build: .
+    command: sh -c 'uvicorn app.main:app --reload --port=8000 --host=0.0.0.0'
+    ports:
+      - 8000:8000
+    depends_on:
+      - mongo
+    volumes:
+      - .:/code
+    links:
+      - mongo
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    ports:
+      - 27017:27017
+
+networks:
+  app-network:
